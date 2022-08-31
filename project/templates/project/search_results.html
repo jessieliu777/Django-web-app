@@ -1,0 +1,14 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+{% if searched%}
+    <h1>Search results for {{searched}} </h1>
+    <br/>
+    {% for product in products %}
+        {{product}} <br/>
+    {% endfor %}
+{% else %}
+    <h1> You did not search for a product </h1>
+{% endif %}
+
+{% endblock %}

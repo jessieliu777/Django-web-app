@@ -1,0 +1,10 @@
+{% extends 'project/base.html' %}
+{% block content %}
+
+<h1>Filter results </h1>
+<br/>
+{% for product in products %}
+    {{product}} <br/>
+{% endfor %}
+
+{% endblock %}
