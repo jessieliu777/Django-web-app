@@ -2,6 +2,8 @@ from django.shortcuts import render
 
 from django.db.models import Q
 from project.models import Product
+from rest_framework import generics
+from api.serializers import ProductSerializer
 
 # Create your views here.
 def index(request):
