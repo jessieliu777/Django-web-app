@@ -15,12 +15,17 @@ Including another URLconf
 """
 
 from django.urls import path
-from api.views import ProductList, ProductSingle, TagList, TagSingle
+from api.views import ProductList, ProductSingle, CategoryList, CategorySingle, TagList, TagSingle, api_root
+from rest_framework.urlpatterns import format_suffix_patterns
 
 from django.contrib import admin
 
-urlpatterns = [
-    path('products/', ProductList.as_view()),
-    path('products/<int:pk>', ProductSingle.as_view()),
-    path('tags/<int:pk>', ProductList.as_view())
-]
+urlpatterns = format_suffix_patterns([
+    path(r'products/', ProductList.as_view(), name='product-list'),
+    path('products/<int:pk>', ProductSingle.as_view(), name='product-single'),
+    path('categories/', CategoryList.as_view(), name='category-list'),
+    path('categories/<int:pk>', CategorySingle.as_view(), name='category-single'),
+    path('tags/', TagList.as_view(), name='tag-list'),
+    path('tags/<int:pk>', TagSingle.as_view(), name='tag-single'),
+    path('', api_root)
+])

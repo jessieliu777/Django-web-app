@@ -14,21 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 
 from api import views
 
-from project.views import index
-from project.views import search_results
-from project.views import products_all
-from project.views import filter_results
+from project.views import index, RenderViewFrontend
+from project.views import search_results, filter_results
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
     path('api/', include('api.urls')),
-    path('add/', views.addData),
     path('search/', search_results, name='search_results'),
-    path('products/', products_all, name='products_all'),
-    path('filter/', filter_results, name='filter_results')
+
+    # r = regular expression, catches every url possible.
+    # Has to be on the bottom otherwise every url goes to it
+    # Django no longer handles a lot of errors -> frontend handles
+    # re_path(r'(?P<path>.*)', RenderViewFrontend.as_view(), name='index')
 ]

@@ -9,9 +9,6 @@
           <!-- <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{%url 'index'%}">Home</a>
           </li> -->
-          <li class="nav-item">
-            <a class="nav-link" href="{%url 'products_all'%}">Products</a>
-          </li>
           <!--...
             drop down code
           <li class="nav-item dropdown">
@@ -30,11 +27,6 @@
           </li>
           -->
         </ul>
-        <form class="d-flex" role="search" method="POST" action="{% url 'search_results' %}">
-          {% csrf_token %}
-          <input class="form-control me-2" name="searched" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
       </div>
     </div>
   </nav>
