@@ -2,8 +2,10 @@
 app.controller('MainController', function($scope, $http, $log, MainService) {
     $scope.greeting = "Welcome!";
     $scope.products = [];
+    $scope.page = 0;
+    $scope.page_size = 10;
     $scope.get = function() {
-        MainService.get('/api/products/').then(function(res){
+        MainService.get('/api/products/' + '?page=' + $scope.page + '&page_size=' + $scope.page_size).then(function(res){
           $scope.products = res;
         });
     };

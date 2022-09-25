@@ -5,7 +5,13 @@
 {% block body %}
 {% verbatim %}
 <div ng-app="app" ng-controller="MainController">
-<!--    {{greeting}}-->
+    Page select
+    <form class="d-flex">
+          <input class="form-control me-2" name="search" placeholder="Page number" ng-model="page">
+            <input class="form-control me-2" name="search" placeholder="Items per page" ng-model="page_size">
+          <button class="btn btn-outline-success" ng-click="get()"> Search </button>
+    </form>
+
     Add Product
     <form class="d-flex">
         <input class="form-control me-2" type="text" name="name" placeholder="name" ng-model="newProduct.name">
@@ -23,7 +29,7 @@
     Search Product
     <form class="d-flex">
           <input class="form-control me-2" name="search" placeholder="Keyword" ng-model="keyword">
-<!--          <button class="btn btn-outline-success" ng-click="searchProducts"> Search </button>-->
+          <button class="btn btn-outline-success" ng-click="searchProducts()"> Search </button>
     </form>
 
     Filter Product

@@ -26,17 +26,20 @@ def api_root(request, format=None):
 class ProductList(APIView, PageNumberPagination):
     # using APIView
     def get(self, request, format=None):
-        page = int(request.GET.get('page', 1))
-        print(request.GET)
-        page_size = 100
+        page = int(request.query_params.get('page', 0))
+        page_size = int(request.query_params.get('page_size', 10))
         products = Product.objects.all().order_by('id')
+        if page == 0:
+            page_size = products.count()
+            page = 1
         paginator = Paginator(products, page_size)
+        print(page)
         products_paginated = paginator.page(page)
         serializer = ProductSerializer(products_paginated, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        print(request.data)
+        print(request.query_params.get('page'))
         name = request.data['name']
         category_data = request.data['category']
         category = Category.objects.filter(id=category_data['id'])[0]
@@ -65,12 +68,8 @@ class CategoryList(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        # serializer = CategorySerializer(data=request.data)
-        # if serializer.is_valid():
-        #     serializer.save()
         category = Category.objects.create(name=request.data['name'])
         return Response(request.data, status=status.HTTP_201_CREATED)
-        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class TagList(generics.ListCreateAPIView):
@@ -81,22 +80,6 @@ class TagList(generics.ListCreateAPIView):
 class ProductSingle(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-
-    # using mixins
-    # def get_object(self, pk):
-    #     try:
-    #         return Product.objects.get(pk=pk)
-    #     except Product.DoesNotExist:
-    #         raise Http404
-    #
-    # def get(self, request, *args, **kwargs):
-    #     return self.retrieve(request, *args, **kwargs)
-
-    # using APIView
-    # def get(self, request, pk, format=None):
-    #     product = self.get_object(pk)
-    #     serializer = ProductSerializer(product)
-    #     return Response(serializer.data)
 
 
 class TagSingle(generics.RetrieveUpdateDestroyAPIView):
