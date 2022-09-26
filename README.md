@@ -1,6 +1,8 @@
 # Django-web-app
-Search is on the Navbar's right hand side.
+Page is the page number, and Page 0 means all items
 
-Filter is under "Products" on the Navbar.
+Page size is the number of items in a page
 
-base.html, navbar.html template by getbootstrap.com
+Need to refresh the page after adding an item
+
+Filter and search doesn't need to refresh
