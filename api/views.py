@@ -33,13 +33,11 @@ class ProductList(APIView, PageNumberPagination):
             page_size = products.count()
             page = 1
         paginator = Paginator(products, page_size)
-        print(page)
         products_paginated = paginator.page(page)
         serializer = ProductSerializer(products_paginated, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        print(request.query_params.get('page'))
         name = request.data['name']
         category_data = request.data['category']
         category = Category.objects.filter(id=category_data['id'])[0]
@@ -49,13 +47,11 @@ class ProductList(APIView, PageNumberPagination):
         # add tags in the tag table of product
         for tag in tags:
             product.tag.add(tag['id'])
-
-        return Response(request.data, status=status.HTTP_201_CREATED)
-        # serializer = ProductSerializer(data=request.data)
-        # if serializer.is_valid():
-        #     serializer.save()
-        #     return Response(serializer.data, status=status.HTTP_201_CREATED)
-        # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer = ProductSerializer(product)
+        try:
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CategoryList(APIView):

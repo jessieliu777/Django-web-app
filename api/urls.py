@@ -18,8 +18,6 @@ from django.urls import path
 from api.views import ProductList, ProductSingle, CategoryList, CategorySingle, TagList, TagSingle, api_root
 from rest_framework.urlpatterns import format_suffix_patterns
 
-from django.contrib import admin
-
 urlpatterns = format_suffix_patterns([
     path(r'products/', ProductList.as_view(), name='product-list'),
     path('products/<int:pk>', ProductSingle.as_view(), name='product-single'),
