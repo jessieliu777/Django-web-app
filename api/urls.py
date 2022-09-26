@@ -22,10 +22,7 @@ from django.contrib import admin
 
 urlpatterns = format_suffix_patterns([
     path(r'products/', ProductList.as_view(), name='product-list'),
-    path('products/<int:pk>', ProductSingle.as_view(), name='product-single'),
     path('categories/', CategoryList.as_view(), name='category-list'),
-    path('categories/<int:pk>', CategorySingle.as_view(), name='category-single'),
     path('tags/', TagList.as_view(), name='tag-list'),
-    path('tags/<int:pk>', TagSingle.as_view(), name='tag-single'),
     path('', api_root)
 ])
