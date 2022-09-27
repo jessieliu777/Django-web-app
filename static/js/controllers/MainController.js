@@ -1,12 +1,16 @@
 // scope is something everyone can talk to
 app.controller('MainController', function($scope, $http, $log, MainService) {
+    var va = this;
     $scope.greeting = "Welcome!";
     $scope.products = [];
     $scope.page = 0;
     $scope.page_size = 10;
     $scope.get = function() {
-        MainService.get('/api/products/' + '?page=' + $scope.page + '&page_size=' + $scope.page_size).then(function(res){
+        MainService.get('/api/products/' + '?page=' + $scope.page + '&page_size=' + $scope.page_size)
+        .then(function(res){
           $scope.products = res;
+        },function(err) {
+          console.error('Error while getting data');
         });
     };
 
@@ -33,14 +37,19 @@ app.controller('MainController', function($scope, $http, $log, MainService) {
     $scope.errors = {};
 
     $scope.post = function() {
-        MainService.post('/api/products/', $scope.newProduct, $scope.errors).then(function(res){
+        MainService.post('/api/products/', $scope.newProduct, $scope.errors)
+        .then(function(res){
           $scope.newProduct = {};
+        }, function(err) {
+            console.error('Error while posting product');
         });
     };
 
     $scope.postCategory = function() {
         MainService.post('/api/categories/', $scope.newCategory, $scope.errors).then(function(res){
           $scope.newCategory = {};
+        }, function(err) {
+            console.error('Error while posting category');
         });
     };
 

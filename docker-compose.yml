@@ -1,0 +1,51 @@
+# templates
+x-django-volumes: &rm1-django-volumes
+  - .:/rm1
+  - /var/log/django/django.log:/var/log/django/django.log
+x-nginx-volumes: &nginx-volumes
+  - static-volume:/rm1/static
+  - /var/log/nginx/access.log:/var/log/nginx/access.log
+  - /var/log/nginx/error.log:/var/log/nginx/error.log
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rm1-django
+    restart: always
+    volumes: *rm1-django-volumes
+    environment:
+      SERVICE_NAME: rm1_django
+    expose: # expose only to other services, NOT host machine
+      - 8000
+    networks:
+      - django-network
+      - nginx-network
+    command: "daphne rm1.asgi:application -b 0.0.0.0 -p 8000"
+
+  nginx:
+    build:
+      context: ./docker/
+      dockerfile: NginxDockerfile
+    restart: always
+    container_name: rm1-nginx
+    ports:
+      - 80:80
+    volumes: *nginx-volumes
+    environment:
+      SERVICE_NAME: rm1_nginx
+    depends_on:
+      - django
+    networks:
+      - nginx-network
+    entrypoint: /usr/bin/docker-entrypoint.sh
+
+networks:
+  django-network:
+    driver: bridge
+  nginx-network:
+      driver: bridge
+
+volumes:
+  static-volume:
