@@ -4,40 +4,40 @@
 
 {% block body %}
 {% verbatim %}
-<div ng-app="app" ng-controller="MainController">
+<div ng-app="app" ng-controller="MainController as va">
     Page select
     <form class="d-flex">
-          <input class="form-control me-2" name="search" placeholder="Page number" ng-model="page">
-            <input class="form-control me-2" name="search" placeholder="Items per page" ng-model="page_size">
-          <button class="btn btn-outline-success" ng-click="get()"> Go to page </button>
+          <input class="form-control me-2" name="search" placeholder="Page number" ng-model="va.page">
+            <input class="form-control me-2" name="search" placeholder="Items per page" ng-model="va.page_size">
+          <button class="btn btn-outline-success" ng-click="va.getProducts()"> Go to page </button>
     </form>
 
     Add Product
     <form class="d-flex">
-        <input class="form-control me-2" type="text" name="name" placeholder="name" ng-model="newProduct.name">
+        <input class="form-control me-2" type="text" name="name" placeholder="name" ng-model="va.newProduct.name">
         <span> {{errors.name}} </span>
 
-        <select class="form-control me-2"  name="category" ng-options="category.name for category in categories" ng-model="newProduct.category">
+        <select class="form-control me-2"  name="category" ng-options="category.name for category in categories" ng-model="va.newProduct.category">
         </select>
         <span> {{errors.category}} </span>
 
-        <select multiple class="form-control me-2"  name="tag" ng-options="tag.name for tag in tags" ng-model="newProduct.tag">
+        <select multiple class="form-control me-2"  name="tag" ng-options="tag.name for tag in tags" ng-model="va.newProduct.tag">
         </select>
-        <button class="btn btn-outline-success" ng-click="post()"> Add </button>
+        <button class="btn btn-outline-success" ng-click="va.postProduct()"> Add </button>
     </form>
 
     Search Product
     <form class="d-flex">
-          <input class="form-control me-2" name="search" placeholder="Keyword" ng-model="keyword">
+          <input class="form-control me-2" name="search" placeholder="Keyword" ng-model="va.keyword">
 <!--          <button class="btn btn-outline-success" ng-click="searchProducts()"> Search </button>-->
     </form>
 
     Filter Product
     <form class="d-flex">
-        <input class="form-control me-2" name="name" placeholder="name" ng-model="query.name">
-        <select class="form-control me-2"  name="category" ng-options="category.name for category in categories" ng-model="query.category">
+        <input class="form-control me-2" name="name" placeholder="name" ng-model="va.query.name">
+        <select class="form-control me-2"  name="category" ng-options="category.name for category in categories" ng-model="va.query.category">
         </select>
-        <select multiple class="form-control me-2"  name="tag" ng-options="tag.name for tag in tags" ng-model="query.tag">
+        <select multiple class="form-control me-2"  name="tag" ng-options="tag.name for tag in tags" ng-model="va.query.tag">
         </select>
 <!--        <button class="btn btn-outline-success" ng-click="filterProducts"> Filter </button>-->
     </form>
@@ -48,7 +48,7 @@
         <li class="form-control me-1"> Category </li>
         <li class="form-control me-1" > Tag </li>
     </div>
-    <div class="d-flex" ng-repeat="product in products | filter:searchProducts | filter:filterProducts">
+    <div class="d-flex" ng-repeat="product in va.products | filter:va.searchProducts | filter:va.filterProducts">
         <li class="form-control me-2">{{ product.name }}</li>
         <li class="form-control me-2">{{ product.category.name }}</li>
         <li class="form-control me-2" >
@@ -59,16 +59,16 @@
     </div>
 
 
-<!--    <form> Add Category-->
-<!--        <ul>-->
-<!--            <li>-->
-<!--                <input type="text" name="name" placeholder="Category" ng-model="newCategory.name">-->
-<!--                <span> {{errors.name}} </span>-->
-<!--            </li>-->
+    <form> Add Category
+        <ul>
+            <li>
+                <input type="text" name="name" placeholder="Category" ng-model="newCategory.name">
+                <span> {{errors.name}} </span>
+            </li>
 
-<!--            <button ng-click="postCategory()"> Add </button>-->
-<!--        </ul>-->
-<!--    </form>-->
+            <button ng-click="postCategory()"> Add </button>
+        </ul>
+    </form>
 </div>
 
 {% endverbatim %}
