@@ -23,12 +23,24 @@ def api_root(request, format=None):
 class ProductList(ListAPIView):
     pagination = ProductPagination
     # using APIView
+
+    # serializer_class = ProductSerializer
+
+    # get_queryset(self)
+
+
     def get(self, request, format=None):
-        products = Product.objects.all().order_by('id')
-        page = int(request.query_params.get('page', 1))
+        products = Product.objects.select_related('category').prefetch_related('tag')
+        try:
+            page = int(request.query_params.get('page', 1))
+        except:
+            page = 1
         max_page_size = products.count()
-        page_size = int(request.query_params.get('page_size', max_page_size))
-        page_size = min(page_size, max_page_size)
+        try:
+            page_size = int(request.query_params.get('page_size', max_page_size))
+            page_size = min(page_size, max_page_size)
+        except:
+            page_size = max_page_size
         paginator = Paginator(products, page_size)
         products_paginated = paginator.page(page)
         serializer = ProductSerializer(products_paginated, many=True)

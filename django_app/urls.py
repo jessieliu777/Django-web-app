@@ -18,10 +18,13 @@ from django.urls import path, include
 
 from project.views import index
 
+import debug_toolbar
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name='index'),
     path('api/', include('api.urls')),
+    path('__debug__/', include(debug_toolbar.urls)),
 
     # r = regular expression, catches every url possible.
     # Has to be on the bottom otherwise every url goes to it
