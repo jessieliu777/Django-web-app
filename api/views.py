@@ -1,15 +1,12 @@
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
 from project.models import Product, Category, Tag
-from rest_framework import generics, status, mixins
+from rest_framework import generics, status
 from api.serializers import ProductSerializer, CategorySerializer, TagSerializer
+from api.pagination import ProductPagination
 
-from rest_framework.views import APIView
-from django.http import Http404, JsonResponse, HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework.reverse import reverse
-from django.db.models import Q
-from rest_framework.pagination import PageNumberPagination
 
 # Import pagination
 from django.core.paginator import Paginator
@@ -23,7 +20,8 @@ def api_root(request, format=None):
 
 
 #
-class ProductList(APIView, PageNumberPagination):
+class ProductList(ListAPIView):
+    pagination = ProductPagination
     # using APIView
     def get(self, request, format=None):
         products = Product.objects.all().order_by('id')
@@ -55,7 +53,7 @@ class ProductList(APIView, PageNumberPagination):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class CategoryList(APIView):
+class CategoryList(ListAPIView):
     # serializer_class = CategorySerializer
     # queryset = Category.objects.all()
 
