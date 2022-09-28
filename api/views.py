@@ -26,20 +26,21 @@ def api_root(request, format=None):
 class ProductList(APIView, PageNumberPagination):
     # using APIView
     def get(self, request, format=None):
-        page = int(request.query_params.get('page', 0))
-        page_size = int(request.query_params.get('page_size', 10))
         products = Product.objects.all().order_by('id')
-        if page == 0:
-            page_size = products.count()
-            page = 1
+        page = int(request.query_params.get('page', 1))
+        max_page_size = products.count()
+        page_size = int(request.query_params.get('page_size', max_page_size))
+        page_size = min(page_size, max_page_size)
         paginator = Paginator(products, page_size)
         products_paginated = paginator.page(page)
         serializer = ProductSerializer(products_paginated, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        name = request.data['name']
-        category_data = request.data['category']
+        name = request.data.get('name', 'unnamed')
+        category_data = request.data.get('category', None)
+        if category_data is None:
+            return Response(request.data, status=status.HTTP_400_BAD_REQUEST)
         category = Category.objects.filter(id=category_data['id'])[0]
         tags = request.data.get('tag', [])
 

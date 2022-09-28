@@ -3,12 +3,14 @@ app.controller('MainController', function ($scope, $http, $log, MainService) {
     var va = this;
     va.greeting = "Welcome!";
     va.products = [];
-    va.page = 0;
-    va.page_size = 10;
+    va.categories = [];
+    va.tags = [];
+    va.page = 1;
+    va.page_size = 100;
     va.newProduct = {};
 //    $scope.newCategory = {};
 
-    $scope.errors = {};
+    va.errors = {};
     va.query = {};
     va.keyword = '';
 
@@ -24,13 +26,13 @@ app.controller('MainController', function ($scope, $http, $log, MainService) {
         .then(function(res){
           va.products = res;
         },function(err) {
-          console.error('Error while getting data');
+          console.error('Error while getting products');
         });
     };
 
     function getCategories() {
         MainService.get('/api/categories/').then(function(res){
-          $scope.categories = res;
+          va.categories = res;
         });
     };
 
@@ -63,6 +65,9 @@ app.controller('MainController', function ($scope, $http, $log, MainService) {
 
 
    function searchProducts(product) {
+        if (!product) return;
+        if (!product.name || !product.category) return;
+        // the following wouldn't break since empty string can still be converted to lower case
         searchName = product.name.toLowerCase().includes(va.keyword.toLowerCase());
         searchCategory = product.category.name.toLowerCase().includes(va.keyword.toLowerCase());
         searchTag = false;
@@ -75,6 +80,8 @@ app.controller('MainController', function ($scope, $http, $log, MainService) {
     };
 
     function filterProducts(product) {
+        if (!product) return;
+        if (!product.name || !product.category) return;
         filterName = true;
         filterCategory = true;
         filterTag = true;

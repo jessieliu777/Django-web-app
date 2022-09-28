@@ -13,15 +13,21 @@
     </form>
 
     Add Product
-    <form class="d-flex">
-        <input class="form-control me-2" type="text" name="name" placeholder="name" ng-model="va.newProduct.name">
-        <span> {{errors.name}} </span>
+    <form class="d-flex" name="addForm">
+        <input required class="form-control me-2" type="text" name="name" placeholder="name" ng-model="va.newProduct.name">
+        <span> {{va.errors.name}} </span>
 
-        <select class="form-control me-2"  name="category" ng-options="category.name for category in categories" ng-model="va.newProduct.category">
+        <select
+                class="form-control me-2"
+                name="category"
+                ng-model="va.newProduct.category"
+                required >
+            <option value="">Select category</option>
+            <option ng-repeat="category in va.categories" value="{{category.id}}">{{category.name}}</option>
         </select>
-        <span> {{errors.category}} </span>
+        <span> {{va.errors.category}} </span>
 
-        <select multiple class="form-control me-2"  name="tag" ng-options="tag.name for tag in tags" ng-model="va.newProduct.tag">
+        <select multiple class="form-control me-2"  name="tag" ng-options="tag.name for tag in va.tags" ng-model="va.newProduct.tag">
         </select>
         <button class="btn btn-outline-success" ng-click="va.postProduct()"> Add </button>
     </form>
@@ -35,9 +41,9 @@
     Filter Product
     <form class="d-flex">
         <input class="form-control me-2" name="name" placeholder="name" ng-model="va.query.name">
-        <select class="form-control me-2"  name="category" ng-options="category.name for category in categories" ng-model="va.query.category">
+        <select class="form-control me-2"  name="category" ng-options="category.name for category in va.categories" ng-model="va.query.category">
         </select>
-        <select multiple class="form-control me-2"  name="tag" ng-options="tag.name for tag in tags" ng-model="va.query.tag">
+        <select multiple class="form-control me-2"  name="tag" ng-options="tag.name for tag in va.tags" ng-model="va.query.tag">
         </select>
 <!--        <button class="btn btn-outline-success" ng-click="filterProducts"> Filter </button>-->
     </form>
