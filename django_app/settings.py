@@ -140,3 +140,30 @@ mimetypes.add_type("text/javascript", ".js", True)
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
+# for logging
+# DEBUG: Low level system information for debugging purposes
+# INFO: General system information
+# WARNING: Information describing a minor problem that has occurred.
+# ERROR: Information describing a major problem that has occurred.
+# CRITICAL: Information describing a critical problem that has occurred.
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': False,
+        },
+    },
+}

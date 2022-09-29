@@ -33,36 +33,25 @@ class ProductList(ListAPIView):
             queryset = self.queryset.filter(name=name)
         if category is not None:
             queryset = self.queryset.filter(category__name=name)
-
-        # print(self.pagination_class.page_size);
         return queryset
 
-    # def get(self, request, format=None):
-    #     products = self.get_queryset()
-    #     page = self.paginate_queryset(products)
-    #     serializer = ProductSerializer(page)
-    #
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
-
     def post(self, request, format=None):
-        # name = request.data.get('name', 'unnamed')
-        # category_data = request.data.get('category', None)
-        # if category_data is None:
-        #     return Response(request.data, status=status.HTTP_400_BAD_REQUEST)
-        # category = Category.objects.filter(id=category_data['id'])[0]
-        # tags = request.data.get('tag', [])
-        #
-        # product = Product.objects.create(name=name, category=category)
-        # # add tags in the tag table of product
-        # for tag in tags:
-        #     product.tag.add(tag['id'])
-        # serializer = ProductSerializer(product)
-        # try:
-        #     return Response(serializer.data, status=status.HTTP_201_CREATED)
-        # except:
-        #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        name = request.data.get('name', 'unnamed')
+        category_data = request.data.get('category', None)
+        if category_data is None:
+            return Response(request.data, status=status.HTTP_400_BAD_REQUEST)
+        category = Category.objects.filter(id=category_data['id'])[0]
+        tags = request.data.get('tag', [])
 
-        return self.list(request)
+        product = Product.objects.create(name=name, category=category)
+        # add tags in the tag table of product
+        for tag in tags:
+            product.tag.add(tag['id'])
+        serializer = ProductSerializer(product)
+        try:
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CategoryList(ListAPIView):

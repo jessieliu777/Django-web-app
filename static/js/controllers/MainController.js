@@ -6,7 +6,7 @@ app.controller('MainController', function ($scope, $http, $log, MainService) {
     va.categories = [];
     va.tags = [];
     va.page = 1;
-    va.page_size = 100;
+    va.page_size = 50;
     va.newProduct = {};
 //    $scope.newCategory = {};
 
