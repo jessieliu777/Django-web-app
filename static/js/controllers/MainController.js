@@ -13,7 +13,8 @@ app.controller('MainController', function ($scope, $http, $log, MainService) {
     va.errors = {};
     va.query = {};
     va.keyword = '';
-
+    va.page = 1;
+    va.page_size = 10;
     va.getProducts = getProducts;
     va.getCategories = getCategories;
     va.getTags = getTags;
@@ -22,8 +23,10 @@ app.controller('MainController', function ($scope, $http, $log, MainService) {
     va.filterProducts = filterProducts;
 
     function getProducts() {
-        MainService.get('/api/products/' + '?page=' + va.page + '&page_size=' + va.page_size)
+        MainService.get('/api/products/' + '?page=' + va.page + '&page_size' + va.page_size)
         .then(function(res){
+            $log.log('result')
+            $log.log(res)
           va.products = res;
         },function(err) {
           console.error('Error while getting products');
